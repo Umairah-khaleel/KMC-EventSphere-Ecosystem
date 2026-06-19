@@ -1,0 +1,134 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userId = HttpContextAccessor?.HttpContext?.Session?.GetInt32("UserID");
+    var role = HttpContextAccessor?.HttpContext?.Session?.GetString("Role");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TechEventsWeb</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TechEventsWeb.styles.css" asp-append-version="true" />
+
+    <style>
+            .navbar * {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .navbar {
+                background: white;
+            }
+
+                .navbar .nav-link,
+                .navbar .btn-link {
+                    background: linear-gradient(90deg, #66bb6a, #a5d6a7) !important;
+                    color: white !important;
+                    font-weight: 600;
+                    padding: 6px 14px;
+                    border-radius: 8px;
+                    margin-right: 8px;
+                    display: inline-block;
+                    text-decoration: none;
+                    border: none;
+                }
+
+                    .navbar .nav-link:hover,
+                    .navbar .btn-link:hover {
+                        background: #e6f7ff;
+                        color: #2e7d32 !important;
+                        transform: scale(1.05);
+                    }
+
+                .navbar form {
+                    margin: 0;
+                }
+
+                .navbar .btn-link {
+                    text-decoration: none;
+                    padding: 6px 12px;
+                }
+
+                    .navbar .btn-link:focus,
+                    .navbar .btn-link:active {
+                        background: transparent !important;
+                        box-shadow: none !important;
+                    }
+
+            .container-fluid {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            main {
+                margin-top: 20px;
+            }
+    </style>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="margin-bottom:0; border:none;">
+            <div class="container-fluid p-0">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">TechEventsWeb</a>
+                <button class="navbar-toggler" type="button" disabled>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse d-flex justify-content-between align-items-center">
+                    <ul class="navbar-nav me-auto align-items-center">
+                        @if (userId == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Login">Login</a>
+                            </li>
+                        }
+                        else
+                        {
+                            @if (role == "Organizer")
+                            {
+                                <li class="nav-item">
+                                    <form method="post" asp-page="/Index" asp-page-handler="GoDashboard" style="display:inline;">
+                                        <button class="nav-link btn btn-link text-dark" type="submit">Dashboard</button>
+                                    </form>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <form method="post" asp-page="/Index" asp-page-handler="Logout"
+                                      onsubmit="return confirm('Are you sure you want to logout?');"
+                                      style="display:inline;">
+                                    <button class="nav-link btn btn-link text-dark" type="submit">Logout</button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-muted" style="border:none;">
+        <div class="container">
+            &copy; 2026 - TechEventsWeb - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

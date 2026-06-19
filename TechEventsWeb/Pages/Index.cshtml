@@ -1,0 +1,175 @@
+﻿@page
+@model IndexModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var role = HttpContextAccessor?.HttpContext?.Session?.GetString("Role");
+    bool isLoggedIn = !string.IsNullOrEmpty(role);
+}
+
+<style>
+
+    body {
+        margin: 0;
+        font-family: 'Segoe UI';
+        background: #f4f9f9;
+    }
+
+    /* HERO SECTION */
+    .hero {
+        background: url('/images/hero2.webp') center/cover no-repeat; 
+        height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-box {
+        background: rgba(0,0,0,0.6);
+        padding: 40px;
+        border-radius: 12px;
+        color: white;
+        text-align: center;
+    }
+
+    /* CARDS */
+    .cards {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 60px 0;
+    }
+
+    .card {
+        width: 220px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        transform: translateY(50px);
+        opacity: 0;
+        transition: 0.6s;
+    }
+
+        .card.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+    .btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 15px;
+        background: #66bb6a;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+        .btn:hover {
+            background: #a5d6a7;
+        }
+
+    button {
+        margin-top: 10px;
+        padding: 8px 15px;
+        background: #66bb6a;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background: #a5d6a7;
+        }
+</style>
+
+<div class="hero">
+    <div class="hero-box">
+        <h1>Welcome to TechCare Events</h1> 
+        <p>Discover the latest tech events and innovations</p>
+
+        <a asp-page="/Events/Index" class="btn">View Events</a>
+
+    </div>
+</div>
+
+<div class="cards">
+
+    @if (!isLoggedIn)
+    {
+        <div class="card">
+            <img src="/images/login.png" /> 
+            <h3>Login</h3>
+            <p>Access your account</p>
+            <a href="/Login" class="btn">Go</a>
+        </div>
+    }
+    else
+    {
+
+        <div class="card">
+            <img src="/images/dashboard.jpg" />
+            <h3>Dashboard</h3>
+            <p>Go to your dashboard</p>
+
+            <a href="/Dashboard" class="btn">Go</a> 
+        </div>
+
+        <div class="card">
+            <img src="/images/logout.jpg" />
+            <h3>Logout</h3>
+            <p>End your session securely</p>
+
+            <button onclick="confirmLogout()">Logout</button>
+        </div>
+    }
+
+    <div class="card">
+        <img src="/images/view.webp" />
+        <h3>Explore Events</h3>
+        <p>Browse all tech events</p>
+
+        <a asp-page="/Events/Index" class="btn">View Events</a>
+
+    </div>
+
+</div>
+
+<script>
+    function confirmLogout() {
+        if (confirm("Are you sure you want to logout?")) {
+            window.location.href = "/Logout";
+        }
+    }
+</script>
+
+<script>
+    const cards = document.querySelectorAll('.card');
+
+    function showCards() {
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 50) {
+                card.classList.add('show');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', showCards);
+    window.addEventListener('load', showCards);
+</script>

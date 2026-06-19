@@ -1,0 +1,207 @@
+﻿@page
+@model EditModel
+
+<h2 style="text-align:center;">Edit Event</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div style="
+        background: #a5d6a7;
+        color: #1b5e20;
+        padding: 10px;
+        border-radius: 8px;
+        text-align:center;
+        font-weight: 500;
+        margin: 15px auto;
+        width: fit-content;">
+        @TempData["Message"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            window.location.href = '/Events/Index';
+        }, 2000);
+    </script>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div style="
+        background: #ffcdd2;
+        color: #b71c1c;
+        padding: 10px;
+        border-radius: 8px;
+        text-align:center;
+        font-weight: 500;
+        margin: 15px auto;
+        width: fit-content;">
+        @TempData["Error"]
+    </div>
+}
+
+<style>
+    /* Background */
+    body {
+        min-height: 100vh;
+        background: linear-gradient(90deg, #66bb6a, #a5d6a7) !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Title */
+    h2 {
+        background: white;
+        color: #2e7d32;
+        padding: 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 20px auto;
+        font-weight: 700;
+    }
+
+    /* Form card */
+    form {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        margin: 40px auto;
+    }
+
+    input {
+        background: #fff;
+    }
+
+    /* Table layout */
+    table {
+        width: 100%;
+    }
+
+    /* Labels */
+    td:first-child {
+        font-weight: 500;
+        color: #555;
+        padding-bottom: 10px;
+    }
+
+    /* Inputs */
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+    
+
+        input:focus {
+            border-color: #1b5e20;
+            outline: none;
+        }
+
+    /* Button */
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #66bb6a, #a5d6a7) !important;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
+
+        button:hover {
+            background: linear-gradient(90deg, #2e7d32, #43a047) !important;
+        }
+
+    .text-danger {
+        display: block;
+        margin-top: 4px;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Error message */
+    p[style*="color:red"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+    /* Success Message*/
+    p[style*="color:green"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+</style>
+
+
+<form method="post" style="width:400px; margin:auto;">
+
+    <input type="hidden" asp-for="Event.EventID" />
+
+    <div>
+        <label>Title</label>
+        <input asp-for="Event.Title" readonly />
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Description</label>
+        <input asp-for="Event.Description" readonly />
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Price</label>
+        <input asp-for="Event.Price" readonly />
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Date</label>
+        <input asp-for="Event.Date" type="date"
+               min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Event.Date" style="color:red"></span>
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Time</label>
+        <input type="time"
+               name="Time"
+               value="@Model.Time.ToString(@"hh\:mm")" />
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Location</label>
+        <input asp-for="Event.Location" />
+        <span asp-validation-for="Event.Location" style="color:red"></span>
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Seats</label>
+        <input asp-for="Event.SeatsAvailable" type="number" min="1" />
+    </div>
+
+    <button type="submit">
+        Update Event
+    </button>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
