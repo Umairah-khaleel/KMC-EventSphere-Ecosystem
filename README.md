@@ -1,21 +1,21 @@
 # KMC EventSphere - Distributed Web Ecosystem
 
-A full-scale, multi-tiered software ecosystem designed to manage, distribute, and consume event planning operations. This project showcases a decoupled service-oriented architecture featuring a custom RESTful API backend and multiple client platforms.
+A full-scale, multi-tiered software ecosystem designed to manage, distribute, and consume event planning workflows. This project showcases a completely decoupled, service-oriented architecture featuring a custom C# ASP.NET Core RESTful API backend and multiple consumer client platforms.
 
 ---
 
 ## 🏗️ System Architecture Overview
 
-The system is split into three interconnected architectural components:
+The ecosystem is divided into three core interconnected applications:
 
-### 1. ⚙️ Core RESTful API (`KMCEventSphere`)
-The centralized engine and data layer of the ecosystem. It manages resource endpoints, processes structured data routing, and handles relational entity lookups.
-* **Responsibilities:** API routing, JSON payloads, entity relational schema logic, cross-origin communication settings.
+### 1. ⚙️ Core RESTful API Backend (`KMCEventSphere`)
+The centralized data orchestration engine of the ecosystem built with ASP.NET Core. It manages server endpoints, structures relational database queries, handles request-routing logic, and services JSON data streams.
+* **Key Focus:** API endpoint mapping, JSON payload generation, database connectivity, and structured resource management using a clean Controller/Model architecture.
 
-### 2. 🌐 Primary Client Platform (`KMCEventSphereWeb`)
-The native client application built to fully consume the core API endpoints. It translates raw JSON server arrays into a clean, operational user interface for system workflows.
-* **Responsibilities:** HTTP request handshakes, dynamic state rendering, interface navigation, state verification.
+### 2. 🌐 Primary Consumer Client (`KMCEventSphereWeb`)
+The native web interface built to fully consume the core API endpoints. It dynamically communicates with the backend services via HTTP handshakes to parse raw server data arrays into an interactive, functional operational dashboard.
+* **Key Focus:** HTTP communication, real-time UI rendering, and internal platform workflow state tracking.
 
-### 3. 🔌 3rd-Party Consumer Client (`TechEventsWeb`)
-An external sandbox application demonstrating decoupled data consumption. It validates the API’s modular security design by communicating with the endpoints from a separate client context.
-* **Responsibilities:** Independent endpoint interaction, custom dataset layout parsing.
+### 3. 🔌 3rd-Party Integration Client (`TechEventsWeb`)
+An independent application acting as an external sandbox consumer. It validates the API's cross-origin data sharing capabilities and structural security design by securely pulling and parsing endpoints from a completely separate client context.
+* **Key Focus:** Decoupled data consumption, custom layout rendering, and external endpoint interaction.
