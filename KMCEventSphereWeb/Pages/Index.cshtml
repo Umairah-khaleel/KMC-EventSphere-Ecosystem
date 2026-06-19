@@ -1,0 +1,197 @@
+﻿@page
+@model IndexModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    int? userId = HttpContextAccessor.HttpContext?.Session.GetInt32("UserID");
+    string role = HttpContextAccessor.HttpContext?.Session.GetString("Role") ?? "";
+    bool isLoggedIn = userId != null;
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI';
+        background: #f4f9f9;
+    }
+
+    /* HERO */
+    .hero {
+        background: url('/images/hero.webp') center/cover no-repeat;
+        height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-box {
+        background: rgba(0,0,0,0.6);
+        padding: 40px;
+        border-radius: 12px;
+        color: white;
+        text-align: center;
+    }
+
+    /* CARDS */
+    .cards {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 60px 0;
+    }
+
+    .card {
+        width: 220px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        transform: translateY(50px);
+        opacity: 0;
+        transition: 0.6s;
+    }
+
+        .card.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+    button {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 15px;
+        background: #0077b6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background: #0096c7;
+        }
+
+    .btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 15px;
+        background: #0077b6;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+        .btn:hover {
+            background: #0096c7;
+        }
+</style>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-box">
+        <h1>Discover Events in Kandy</h1>
+        <p>Explore exciting events happening around you</p>
+
+        @if (!isLoggedIn)
+        {
+            <a asp-page="/Auth/Login" asp-route-error="loginRequired" class="btn">View Events</a>
+        }
+        else
+        {
+            <a asp-page="/Events/Index" class="btn">View Events</a>
+        }
+    </div>
+</div>
+
+<!-- CARDS -->
+<div class="cards">
+
+    @if (!isLoggedIn)
+    {
+        <!-- LOGIN -->
+        <div class="card">
+            <img src="images/login.png" />
+            <h3>Login</h3>
+            <p>Access your account</p>
+            <a asp-page="/Auth/Login" class="btn">Go</a>
+        </div>
+
+        <!-- SIGNUP -->
+        <div class="card">
+            <img src="images/signup.png" />
+            <h3>Signup</h3>
+            <p>Create new account</p>
+            <a asp-page="/Auth/Signup" class="btn">Go</a>
+        </div>
+    }
+    else
+    {
+        <!-- DASHBOARD -->
+        <div class="card">
+            <img src="images/dashboard.jpg" />
+            <h3>Dashboard</h3>
+            <p>Go to your dashboard</p>
+
+            <form method="post" asp-page-handler="GoDashboard" style="display:inline;">
+                <button type="submit">Dashboard</button>
+            </form>
+        </div>
+
+        <!-- LOGOUT -->
+        <div class="card">
+            <img src="images/logout.jpg" />
+            <h3>Logout</h3>
+            <p>End your session securely</p>
+
+            <form method="post" asp-page-handler="Logout"
+                  onsubmit="return confirm('Are you sure you want to logout?');">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    }
+
+    <!-- EVENTS -->
+    <div class="card">
+        <img src="images/event.jpg" />
+        <h3>Explore Events</h3>
+        <p>Browse all events</p>
+        @if (!isLoggedIn)
+        {
+            <a asp-page="/Auth/Login" asp-route-error="loginRequired" class="btn">View</a>
+        }
+        else
+        {
+            <a asp-page="/Events/Index" class="btn">View</a>
+        }
+    </div>
+
+</div>
+
+<!-- ANIMATION SCRIPT -->
+<script>
+    const cards = document.querySelectorAll('.card');
+
+    function showCards() {
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 50) {
+                card.classList.add('show');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', showCards);
+    window.addEventListener('load', showCards);
+</script>

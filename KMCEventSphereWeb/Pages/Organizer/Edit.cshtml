@@ -1,0 +1,248 @@
+﻿@page
+@model KMCEventSphereWeb.Pages.Organizers.EditModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var role = HttpContextAccessor?.HttpContext?.Session?.GetString("Role");
+}
+
+<style>
+    /* Background */
+    body {
+        height: 100vh;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Title */
+    h2 {
+        background: white;
+        color: #0077b6;
+        padding: 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 20px auto;
+        font-weight: 700;
+    }
+
+    /* Form card */
+    form {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        margin: 40px auto;
+        position: relative;
+        z-index: 5;
+    }
+
+    input {
+        background: #fff;
+    }
+
+    /* Table layout */
+    table {
+        width: 100%;
+    }
+
+    /* Labels */
+    td:first-child {
+        font-weight: 500;
+        color: #555;
+        padding-bottom: 10px;
+    }
+
+    /* Inputs */
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+    }
+    
+
+        input:focus {
+            border-color: #0077b6;
+            outline: none;
+        }
+
+    /* Button */
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
+
+        button:hover {
+            background: linear-gradient(90deg, #0096c7, #00b4d8);
+        }
+
+    .text-danger {
+        display: block;
+        margin-top: 4px;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Error message */
+    p[style*="color:red"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+    /* Success Message*/
+    p[style*="color:green"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+</style>
+
+<h2>Edit Organizer</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">@Model.ErrorMessage</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <p style="color:green">@Model.SuccessMessage</p>
+
+    <script>
+        setTimeout(function () {
+
+            var role = '@role';
+
+            if (role === "Admin") {
+                window.location.href = '/Admin/Organizers';
+            } else {
+                window.location.href = '/Organizer/Dashboard';
+            }
+
+        }, 2000);
+    </script>
+
+}
+
+<form method="post">
+
+    <input type="hidden" asp-for="Organizer.OrganizerID" />
+
+    <table>
+        <tr>
+            <td>Organization Name</td>
+            <td>
+                @if (role == "Admin")
+                {
+                    <input asp-for="Organizer.OrganizationName" />
+                }
+                else
+                {
+                    <input asp-for="Organizer.OrganizationName" readonly />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td>Full Name</td>
+            <td>
+                @if (role == "Admin")
+                {
+                    <input asp-for="Organizer.FullName" />
+                }
+                else
+                {
+                    <input asp-for="Organizer.FullName" readonly />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td>Email</td>
+            <td>
+                @if (role == "Admin")
+                {
+                    <input asp-for="Organizer.Email" />
+                }
+                else
+                {
+                    <input asp-for="Organizer.Email" readonly />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td>Phone</td>
+            <td>
+                @if (role == "Organizer")
+                {
+                    <input asp-for="Organizer.Phone" />
+                }
+                else
+                {
+                    <input asp-for="Organizer.Phone" readonly />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td>Address</td>
+            <td>
+                @if (role == "Organizer")
+                {
+                    <input asp-for="Organizer.Address" />
+                }
+                else
+                {
+                    <input asp-for="Organizer.Address" readonly />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td>Description</td>
+            <td>
+                @if (role == "Organizer")
+                {
+                    <input asp-for="Organizer.Description" />
+                }
+                else
+                {
+                    <input asp-for="Organizer.Description" readonly />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td colspan="2">
+                <button type="submit">Update</button>
+            </td>
+        </tr>
+    </table>
+
+</form>

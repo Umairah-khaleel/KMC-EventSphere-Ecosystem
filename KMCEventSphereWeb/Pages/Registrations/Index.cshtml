@@ -1,0 +1,177 @@
+﻿@page
+@model KMCEventSphereWeb.Pages.Registrations.IndexModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var role = HttpContextAccessor?.HttpContext?.Session?.GetString("Role");
+}
+
+<style>
+    /* Page background */
+    body {
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+    }
+
+    /* Container feel */
+    h2 {
+        background: white;
+        color: #0077b6;
+        padding: 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 20px auto;
+        font-weight: 700;
+    }
+
+    /* Table styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        margin-bottom: 30px;
+    }
+
+        /* Header */
+        table th {
+            background: linear-gradient(90deg, #0077b6, #0096c7);
+            color: #fff;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Cells */
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Hover effect */
+        table tr:hover {
+            background-color: #f1f1f1;
+            transition: 0.3s;
+        }
+
+    /* Buttons */
+    button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        button:hover {
+            background: linear-gradient(90deg, #0096c7, #00b4d8);
+        }
+
+    /* Links (Edit/Delete) */
+    a {
+        text-decoration: none;
+        color: #0077b6;
+        font-weight: 500;
+    }
+
+        a:hover {
+            color: #023e8a;
+        }
+
+    /* Closed label */
+    span {
+        font-weight: bold;
+        color: #dc3545;
+    }
+
+    /* Responsive */
+    @@media(max - width: 768px) {
+        table th, table td {
+            font-size: 12px;
+            padding: 8px;
+        }
+    }
+
+    /* Error message */
+    p[style*="color:red"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+    /* Success Message*/
+    p[style*="color:green"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+</style>
+
+
+<h2>Registrations</h2>
+
+<form method="get">
+    <select name="Filter">
+        <option value="key">Keyword</option>
+        <option value="registrationId">Registration ID</option>
+        <option value="participantName">Name</option>
+        <option value="participantEmail">Email</option>
+        <option value="eventId">Event ID</option>
+
+        @if (role == "Admin")
+        {
+            <option value="userId">User ID</option>
+            <option value="organizerId">Organizer ID</option>
+        }
+    </select>
+
+    <input type="text" name="Value" />
+    <button type="submit">Search</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Organizer ID</th>
+        <th>Event ID</th>
+        <th>Event Title</th>
+        <th>User ID </th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date</th>
+    </tr>
+
+    @foreach (var r in Model.Registrations)
+    {
+        <tr>
+            <td>@r.RegistrationID</td>
+            <td>@r.OrganizerID</td>
+            <td>@r.EventID</td>
+            <td>@r.EventTitle</td>
+            <td>@r.UserID</td>
+            <td>@r.ParticipantName</td>
+            <td>@r.ParticipantEmail</td>
+            <td>@r.RegistrationDate.ToString("yyyy-MM-dd")</td>
+        </tr>
+    }
+</table>
+
+@if (Model.Registrations.Count == 0)
+{
+    <p style="color:red">No results found</p>
+}

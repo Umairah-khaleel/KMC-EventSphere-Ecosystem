@@ -1,0 +1,177 @@
+﻿@page
+@model KMCEventSphereWeb.Pages.Admin.OrganizersModel
+
+<style>
+    /* Page background */
+    body {
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+    }
+
+    /* Container feel */
+    h2 {
+        background: white;
+        color: #0077b6;
+        padding: 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 20px auto;
+        font-weight: 700;
+    }
+
+    /* Table styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        margin-bottom: 30px;
+    }
+
+        /* Header */
+        table th {
+            background: linear-gradient(90deg, #0077b6, #0096c7);
+            color: #fff;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Cells */
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Hover effect */
+        table tr:hover {
+            background-color: #f1f1f1;
+            transition: 0.3s;
+        }
+
+    /* Buttons */
+    button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        button:hover {
+            background: linear-gradient(90deg, #0096c7, #00b4d8);
+        }
+
+    /* Links (Edit/Delete) */
+    a {
+        text-decoration: none;
+        color: #0077b6;
+        font-weight: 500;
+    }
+
+        a:hover {
+            color: #023e8a;
+        }
+
+    /* Closed label */
+    span {
+        font-weight: bold;
+        color: #dc3545;
+    }
+
+    /* Responsive */
+    @@media(max - width: 768px)
+
+    {
+        table th, table td {
+            font-size: 12px;
+            padding: 8px;
+        }
+    }
+
+    /* Error message */
+    p[style*="color:red"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+    /* Success Message*/
+    p[style*="color:green"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+</style>
+
+<h2>Manage Organizers</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">@Model.ErrorMessage</p>
+}
+
+<form method="get">
+    <select name="Filter">
+        <option value="key">Keyword</option>
+        <option value="organizationName">Organization Name</option>
+        <option value="organizerId">Organizer ID</option>
+        <option value="userId">User ID</option>
+    </select>
+
+    <input type="text" name="Value" />
+    <button type="submit">Search</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Organizer ID</th>
+        <th>User ID</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Organization Name</th>
+        <th>Description</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var o in Model.Organizers)
+    {
+        <tr>
+            <td>@o.OrganizerID</td>
+            <td>@o.UserID</td>
+            <td>@o.Name</td>
+            <td>@o.Email</td>
+            <td>@o.OrganizationName</td>
+            <td>@o.Description</td>
+            <td>@o.Phone</td>
+            <td>@o.Address</td>
+            <td>
+                <a asp-page="/Organizer/Edit" asp-route-id="@o.OrganizerID">
+                    Edit
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+@if (Model.Organizers != null && Model.Organizers.Count == 0 && string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">No results found</p>
+}

@@ -1,0 +1,191 @@
+﻿@page
+@model KMCEventSphereWeb.Pages.Events.EditModel
+
+
+<style>
+    /* Background */
+    body {
+        height: 100vh;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Title */
+    h2 {
+        background: white;
+        color: #0077b6;
+        padding: 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 20px auto;
+        font-weight: 700;
+    }
+
+    /* Form card */
+    form {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        margin: 40px auto;
+    }
+
+    input {
+        background: #fff;
+    }
+
+    /* Table layout */
+    table {
+        width: 100%;
+    }
+
+    /* Labels */
+    td:first-child {
+        font-weight: 500;
+        color: #555;
+        padding-bottom: 10px;
+    }
+
+    /* Inputs */
+     input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+    
+
+    input:focus {
+        border-color: #0077b6;
+        outline: none;
+    }
+
+    /* Button */
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        display: block;
+        margin: 0 auto;
+    }
+
+        button:hover {
+            background: linear-gradient(90deg, #0096c7, #00b4d8);
+        }
+
+    .text-danger {
+        display: block;
+        margin-top: 4px;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Error message */
+    p[style*="color:red"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+    /* Success Message*/
+    p[style*="color:green"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+    
+</style>
+
+<h2>Edit Event</h2>
+
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">@Model.ErrorMessage</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <p style="color:green">@Model.SuccessMessage</p>
+
+    <script>
+        setTimeout(function () {
+            window.location.href = '/Events/Index';
+        }, 2000);
+    </script>
+
+}
+
+<form method="post">
+
+    <input type="hidden" asp-for="Event.EventID" />
+
+    <table>
+        <tr>
+            <td>Title</td>
+            <td><input asp-for="Event.Title" readonly /></td>
+        </tr>
+
+        <tr>
+            <td>Description</td>
+            <td><input asp-for="Event.Description" readonly /></td>
+        </tr>
+
+        <tr>
+            <td>Price</td>
+            <td><input asp-for="Event.Price" readonly /></td>
+        </tr>
+
+        <tr>
+            <td>Date</td>
+    <td>
+           
+                  <input type="date" asp-for="Event.Date"
+                       min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
+                       value="@Model.Event.Date?.ToString("yyyy-MM-dd")" />
+    </td>
+</tr>
+
+        <tr>
+    <td>Time</td>
+    <td>
+        <input type="time"
+               name="Time"
+               value="@Model.Time.ToString(@"hh\:mm")" />
+    </td>
+        </tr>
+
+        <tr>
+            <td>Location</td>
+            <td><input asp-for="Event.Location" /></td>
+        </tr>
+
+        <tr>
+            <td>Seats</td>
+            <td><input asp-for="Event.SeatsAvailable" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><button type="submit">Update</button></td>
+        </tr>
+    </table>
+
+</form>

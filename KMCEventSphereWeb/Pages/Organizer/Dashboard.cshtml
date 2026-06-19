@@ -1,0 +1,126 @@
+﻿@page
+@model KMCEventSphereWeb.Pages.Organizer.DashboardModel
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI';
+        background: #f4f9f9;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    /* CARD CONTAINER */
+    .cards {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 60px 0;
+        flex-wrap: wrap;
+    }
+
+    /* CARD STYLE */
+    .card {
+        width: 240px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        transform: translateY(50px);
+        opacity: 0;
+        transition: 0.6s;
+    }
+
+        .card.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+    /* BUTTON */
+    .btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 15px;
+        background: #0077b6;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+        .btn:hover {
+            background: #0096c7;
+        }
+</style>
+
+<h2>Organizer Dashboard</h2>
+
+<div class="cards">
+
+    <!-- MY EVENTS -->
+    <div class="card">
+        <img src="/images/events.jpg" />
+        <h3>My Events</h3>
+        <p>View and manage your events</p>
+
+        <a href="/Events/Index" class="btn">Go</a>
+    </div>
+
+    <!-- CREATE EVENT -->
+    <div class="card">
+        <img src="/images/create.jpg" />
+        <h3>Create Event</h3>
+        <p>Add a new event</p>
+
+        <a href="/Events/Create" class="btn">Go</a>
+    </div>
+
+    <!-- VIEW REGISTRATIONS -->
+    <div class="card">
+        <img src="/images/register.jpg" />
+        <h3>Registrations</h3>
+        <p>See users registered to your events</p>
+
+        <a href="/Registrations" class="btn">Go</a>
+    </div>
+
+    <!-- EDIT PROFILE -->
+    <div class="card">
+        <img src="/images/profile.jpg" />
+        <h3>Edit Profile</h3>
+        <p>Update your information</p>
+
+        <a href="/Organizer/Edit" class="btn">Go</a>
+    </div>
+
+</div>
+
+<script>
+    const cards = document.querySelectorAll('.card');
+
+    function showCards() {
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 50) {
+                card.classList.add('show');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', showCards);
+    window.addEventListener('load', showCards);
+</script>

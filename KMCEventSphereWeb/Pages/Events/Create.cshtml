@@ -1,0 +1,234 @@
+﻿@page
+@model KMCEventSphereWeb.Pages.Events.CreateModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+<style>
+    /* Background */
+    body {
+        height: 100vh;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Title */
+    h2 {
+        background: white;
+        color: #0077b6;
+        padding: 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: 20px auto;
+        font-weight: 700;
+    }
+
+    /* Form card */
+    form {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        margin: 40px auto;
+    }
+
+    input {
+        background: #fff;
+    }
+
+    /* Table layout */
+    table {
+        width: 100%;
+    }
+
+    /* Labels */
+    td:first-child {
+        font-weight: 500;
+        color: #555;
+        padding-bottom: 10px;
+    }
+
+    /* Inputs */
+     input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+    
+
+    input:focus {
+        border-color: #0077b6;
+        outline: none;
+    }
+
+    /* Button */
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #0077b6, #0096c7);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        display: block;
+        margin: 0 auto;
+    }
+
+        button:hover {
+            background: linear-gradient(90deg, #0096c7, #00b4d8);
+        }
+
+    .text-danger {
+        display: block;
+        margin-top: 4px;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Error message */
+    p[style*="color:red"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+
+    /* Success Message*/
+    p[style*="color:green"] {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: fit-content;
+        margin: 15px auto;
+        font-weight: 500;
+    }
+</style>
+@{
+    var role = HttpContextAccessor?.HttpContext?.Session?.GetString("Role");
+}
+
+@if (role != "Organizer")
+{
+    <h3 style="color:red; text-align:center;">Access Denied</h3>
+}
+else
+{
+    <h2>Create Event</h2>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <p class="message-box" style="color:red">@Model.ErrorMessage</p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <p class="message-box" style="color:green">@Model.SuccessMessage</p>
+
+        <script>
+            setTimeout(function () {
+                window.location.href = '/Events/Index';
+            }, 2000);
+        </script>
+
+    }
+
+    <form method="post">
+        <table style="width:100%">
+
+            <tr>
+                <td>Event Title</td>
+                <td>
+                    <input asp-for="Event.Title" />
+                    <span asp-validation-for="Event.Title" style="color:red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Description</td>
+                <td>
+                    <textarea asp-for="Event.Description"></textarea>
+                    <span asp-validation-for="Event.Description" style="color:red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Date</td>
+                <td>
+                    <input asp-for="Event.Date" type="date"
+                           min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="Event.Date" class="text-danger"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Start Time</td>
+                <td>
+                    <input asp-for="Event.Time" type="time" />
+                    <span asp-validation-for="Event.Time" class="text-danger"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Location</td>
+                <td>
+                    <input asp-for="Event.Location" />
+                    <span asp-validation-for="Event.Location" style="color:red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Category</td>
+                <td>
+                    <select asp-for="Event.Category">
+                        <option value="">-- Select Category --</option>
+                        <option>Music</option>
+                        <option>Festival</option>
+                        <option>Gala</option>
+                        <option>Party</option>
+                        <option>Exhibition</option>
+                        <option>Food & Drink</option>
+                        <option>Cultural</option>
+                        <option>Fashion</option>
+                    </select>
+                    <span asp-validation-for="Event.Category" style="color:red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Price (LKR)</td>
+                <td>
+                    <input asp-for="Event.Price" type="number" step="0.01" />
+                    <span asp-validation-for="Event.Price" style="color:red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Seats Available</td>
+                <td>
+                    <input asp-for="Event.SeatsAvailable" type="number" min="1" />
+                    <span asp-validation-for="Event.SeatsAvailable" style="color:red"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Create Event</button>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
